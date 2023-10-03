@@ -15,14 +15,16 @@ odoo.define('web_form_dynamic_button', function (require) {
          */
         _updateButtons: function () {
             this._super.apply(this, arguments);
-            if (this.mode === 'readonly' && this.$buttons && this.hasButtons) {
+            if (this.$buttons && this.hasButtons) {
                 var self = this;
                 var attrs = this.renderer.arch.attrs;
-                var actions = ['edit', 'create'];
+                var actions = ['edit', 'create', 'save', 'cancel'];
                 _.each(actions, function (action) {
                     var expr = attrs[action + '_expr'];
-                    var act_res = expr ? self._evalActionExpr(expr) : self.activeActions[action];
-                    self.$buttons.find('.o_form_button_' + action).toggleClass('o_hidden', !act_res);
+                    if (expr){
+                        var act_res = expr ? self._evalActionExpr(expr) : self.activeActions[action];
+                        self.$buttons.find('.o_form_button_' + action).toggleClass('o_hidden', !act_res);
+                    }
                 });
             }
         },
